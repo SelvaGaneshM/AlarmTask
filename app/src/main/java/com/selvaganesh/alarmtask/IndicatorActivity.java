@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import java.sql.Time;
@@ -63,7 +64,7 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
 
     // Week days step
     private boolean[] weekDays;
-    private LinearLayout daysStepContent;
+    private ConstraintLayout daysStepContent;
     public static final String STATE_WEEK_DAYS = "week_days";
 
     private boolean confirmBack = true;
@@ -212,8 +213,8 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
 
     private View createAlarmTimeStep() {
         LayoutInflater inflater = LayoutInflater.from(getBaseContext());
-        LinearLayout timeStepContent =
-                (LinearLayout) inflater.inflate(R.layout.step_time_layout, null, false);
+        ConstraintLayout timeStepContent =
+                (ConstraintLayout) inflater.inflate(R.layout.step_time_layout, null, false);
         timeTextView = (TextView) timeStepContent.findViewById(R.id.time);
         timeTextView.setOnClickListener(v -> timePicker.show());
         return timeStepContent;
@@ -221,13 +222,13 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
 
     private View createAlarmDaysStep() {
         LayoutInflater inflater = LayoutInflater.from(getBaseContext());
-        daysStepContent = (LinearLayout) inflater.inflate(
+        daysStepContent = (ConstraintLayout) inflater.inflate(
                 R.layout.step_days_of_week_layout, null, false);
 
         String[] weekDays = getResources().getStringArray(R.array.week_days);
         for (int i = 0; i < weekDays.length; i++) {
             final int index = i;
-            final LinearLayout dayLayout = getDayLayout(index);
+            final ConstraintLayout dayLayout = getDayLayout(index);
             if (index < 5) {
                 activateDay(index, dayLayout, false);
             } else {
@@ -275,7 +276,7 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
         timeTextView.setText(time);
     }
 
-    private void activateDay(int index, LinearLayout dayLayout, boolean check) {
+    private void activateDay(int index, ConstraintLayout dayLayout, boolean check) {
         weekDays[index] = true;
         dayLayout.setTag(true);
         Drawable bg = ContextCompat.getDrawable(getBaseContext(),
@@ -290,7 +291,7 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
         }
     }
 
-    private void deactivateDay(int index, LinearLayout dayLayout, boolean check) {
+    private void deactivateDay(int index, ConstraintLayout dayLayout, boolean check) {
         weekDays[index] = false;
         dayLayout.setTag(false);
         dayLayout.setBackgroundResource(0);
@@ -316,10 +317,10 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
         return thereIsAtLeastOneDaySelected;
     }
 
-    private LinearLayout getDayLayout(int i) {
+    private ConstraintLayout getDayLayout(int i) {
         int id = daysStepContent.getResources().getIdentifier(
                 "day_" + i, "id", getPackageName());
-        return (LinearLayout) daysStepContent.findViewById(id);
+        return (ConstraintLayout) daysStepContent.findViewById(id);
     }
 
     private void confirmBack() {
@@ -414,7 +415,7 @@ public class IndicatorActivity extends AppCompatActivity implements VerticalStep
             weekDays = savedInstanceState.getBooleanArray(STATE_WEEK_DAYS);
             if (weekDays != null) {
                 for (int i = 0; i < weekDays.length; i++) {
-                    LinearLayout dayLayout = getDayLayout(i);
+                    ConstraintLayout dayLayout = getDayLayout(i);
                     if (weekDays[i]) {
                         activateDay(i, dayLayout, false);
                     } else {
